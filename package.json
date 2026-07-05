@@ -1,0 +1,70 @@
+{
+  "name": "certification-launchpad-desktop",
+  "productName": "Certification Launchpad",
+  "version": "1.11.3",
+  "description": "Offline desktop edition of The Certification Launchpad — the hub plus every certification study platform in one installable app.",
+  "author": "Rizwan Virani",
+  "license": "MIT",
+  "main": "src/main.js",
+  "scripts": {
+    "sync": "node scripts/sync-sites.mjs",
+    "make-icon": "node scripts/make-icon.mjs",
+    "start": "npm run sync && electron .",
+    "dist": "npm run sync && electron-builder --win",
+    "pack": "npm run sync && electron-builder --win --dir",
+    "publish:gh": "node scripts/publish-release.mjs",
+    "release": "npm run dist && node scripts/publish-release.mjs"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "png-to-ico": "^3.0.1"
+  },
+  "build": {
+    "appId": "com.rizwanvirani.certification-launchpad",
+    "productName": "Certification Launchpad",
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/sites",
+        "to": "sites"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "rizwan-virani",
+        "repo": "launchpad-desktop"
+      }
+    ],
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Certification Launchpad"
+    }
+  }
+}
